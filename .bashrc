@@ -49,13 +49,14 @@ if [[ $iatest -gt 0 ]]; then bind "set completion-ignore-case on"; fi
 if [[ $iatest -gt 0 ]]; then bind "set show-all-if-ambiguous On"; fi
 
 # Set the default editor
-export EDITOR=nvim
-export VISUAL=nvim
-alias pico='edit'
-alias spico='sedit'
-alias nano='edit'
-alias snano='sedit'
-alias vim='nvim'
+export EDITOR=nano
+export VISUAL=nano
+alias pico='nano'
+alias spico='nano'
+alias snano='nano'
+
+
+
 
 # Replace batcat with cat on Fedora as batcat is not available as a RPM in any form
 if command -v lsb_release > /dev/null; then
@@ -110,7 +111,7 @@ alias web='cd /var/www/html'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Edit this .bashrc file
-alias ebrc='edit ~/.bashrc'
+alias ebrc='gedit ~/.bashrc'
 
 # Show help for this .bashrc file
 alias hlp='less ~/.bashrc_help'
@@ -205,7 +206,16 @@ alias mountedinfo='df -hT'
 #Alias open vscode file or folder 
 alias vs='function _jumpcode() { jump_result=$(j "$1") && [ $? -eq 0 ] && code "$jump_result" || echo "Error: 'j' command failed."; }; _jumpcode'
 #Aliase to git push
-alias git0='function _gitpush() {git init && git add. && git commit -m "$1" && git branch -M main && git remote add origin $2 && git push -u origin main;}; _gitpush'
+function gitauto(){
+  git init 
+  git add . 
+  git commit -m "first commit"
+  git branch -M main 
+  git remote add origin $1
+  git push -u origin main
+ }
+
+alias git0='gitauto'
 
 
 # Alias's for archives
@@ -238,12 +248,8 @@ edit ()
 	if [ "$(type -t jpico)" = "file" ]; then
 		# Use JOE text editor http://joe-editor.sourceforge.net/
 		jpico -nonotice -linums -nobackups "$@"
-	elif [ "$(type -t nano)" = "file" ]; then
+	else 
 		nano -c "$@"
-	elif [ "$(type -t pico)" = "file" ]; then
-		pico "$@"
-	else
-		nvim "$@"
 	fi
 }
 sedit ()
@@ -251,12 +257,8 @@ sedit ()
 	if [ "$(type -t jpico)" = "file" ]; then
 		# Use JOE text editor http://joe-editor.sourceforge.net/
 		sudo jpico -nonotice -linums -nobackups "$@"
-	elif [ "$(type -t nano)" = "file" ]; then
+	else 
 		sudo nano -c "$@"
-	elif [ "$(type -t pico)" = "file" ]; then
-		sudo pico "$@"
-	else
-		sudo nvim "$@"
 	fi
 }
 
