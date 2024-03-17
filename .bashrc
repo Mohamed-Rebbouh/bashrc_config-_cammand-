@@ -216,7 +216,13 @@ function gitauto(){
  }
 
 alias git0='gitauto'
-
+function gitauto_to_named_branch_main(){
+  git init 
+  git add . 
+  git commit -m "first commit"
+  git branch -M main 
+ }
+alias git1='gitauto_to_named_branch_main'
 
 # Alias's for archives
 alias mktar='tar -cvf'
